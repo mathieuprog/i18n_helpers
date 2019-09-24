@@ -1,13 +1,24 @@
 defmodule I18nHelpers.MixProject do
   use Mix.Project
 
+  @version "0.5.1"
+
   def project do
     [
       app: :i18n_helpers,
-      version: "0.5.0",
       elixir: "~> 1.9",
       deps: deps(),
-      elixirc_paths: elixirc_paths(Mix.env())
+      elixirc_paths: elixirc_paths(Mix.env()),
+
+      # Hex
+      version: @version,
+      package: package(),
+      description: "A set of tools to help you translate your Elixir applications",
+
+      # ExDoc
+      name: "I18n Helpers",
+      source_url: "https://github.com/mathieuprog/i18n_helpers",
+      docs: docs()
     ]
   end
 
@@ -30,4 +41,20 @@ defmodule I18nHelpers.MixProject do
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp package do
+    [
+      licenses: ["Apache 2.0"],
+      maintainers: ["Mathieu Decaffmeyer"],
+      links: %{"GitHub" => "https://github.com/mathieuprog/i18n_helpers"}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md"],
+      source_ref: "v#{@version}"
+    ]
+  end
 end
