@@ -64,7 +64,11 @@ defmodule I18nHelpers.Ecto.Translator do
   def translate(map, _locale, _opts) when map == %{}, do: nil
 
   def translate(%{} = translations_map, locale, opts) do
-    fallback_locale = Keyword.get(opts, :fallback_locale, Gettext.get_locale())
+    locale = to_string(locale)
+
+    fallback_locale =
+      Keyword.get(opts, :fallback_locale, Gettext.get_locale())
+      |> to_string()
 
     handle_missing_translation =
       Keyword.get(opts, :handle_missing_translation, fn _, _ -> true end)

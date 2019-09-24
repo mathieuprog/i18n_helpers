@@ -5,8 +5,13 @@ defmodule I18nHelpers.Plugs.PutLocaleFromConn do
 
   @spec init(keyword) :: keyword
   def init(options) do
-    allowed_locales = Keyword.get(options, :allowed_locales)
-    default_locale = Keyword.get(options, :default_locale)
+    allowed_locales =
+      Keyword.get(options, :allowed_locales)
+      |> maybe_to_string()
+
+    default_locale =
+      Keyword.get(options, :default_locale)
+      |> maybe_to_string()
 
     cond do
       allowed_locales == nil ->
@@ -46,8 +51,8 @@ defmodule I18nHelpers.Plugs.PutLocaleFromConn do
   def call(conn, options) do
     find_locale = Keyword.fetch!(options, :find_locale)
     handle_missing_locale = Keyword.fetch!(options, :handle_missing_locale)
-    allowed_locales = Keyword.get(options, :allowed_locales)
-    default_locale = Keyword.get(options, :default_locale)
+    allowed_locales = Keyword.get(options, :allowed_locales) |> maybe_to_string()
+    default_locale = Keyword.get(options, :default_locale) |> maybe_to_string()
     backend = Keyword.get(options, :backend)
 
     locale =
@@ -60,4 +65,11 @@ defmodule I18nHelpers.Plugs.PutLocaleFromConn do
 
     assign(conn, :locale, locale)
   end
+
+  defp maybe_to_string(nil), do: nil
+
+  defp maybe_to_string(locale_list) when is_list(locale_list),
+    do: Enum.map(locale_list, &to_string/1)
+
+  defp maybe_to_string(locale), do: to_string(locale)
 end

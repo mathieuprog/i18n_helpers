@@ -44,7 +44,7 @@ defmodule I18nHelpers.Plugs.PutLocaleFromPathTest do
 
     assert conn.assigns == %{locale: "en"}
 
-    options = PutLocaleFromPath.init(allowed_locales: ["en", "fr"])
+    options = PutLocaleFromPath.init(allowed_locales: [:en, "fr"])
 
     conn = conn(:get, "/en/hello")
     conn = PutLocaleFromPath.call(conn, options)

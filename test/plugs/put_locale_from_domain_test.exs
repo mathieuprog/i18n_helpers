@@ -33,7 +33,7 @@ defmodule I18nHelpers.Plugs.PutLocaleFromDomainTest do
       PutLocaleFromDomain.init(
         domains_locales_map: %{
           "english.example" => "en",
-          "nederlands.example" => "nl"
+          "nederlands.example" => :nl
         }
       )
 

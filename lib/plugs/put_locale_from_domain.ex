@@ -41,6 +41,8 @@ defmodule I18nHelpers.Plugs.PutLocaleFromDomain do
     options =
       Keyword.put(options, :find_locale, fn conn ->
         Enum.find_value(domains_locales_map, fn {domain, locale} ->
+          locale = to_string(locale)
+
           cond do
             String.contains?(conn.host, domain) -> locale
             true -> nil

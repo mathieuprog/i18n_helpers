@@ -86,6 +86,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
     assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}) == "hello"
     assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, "en") == "hello"
     assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, "fr") == "bonjour"
+    assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, :fr) == "bonjour"
   end
 
   test "get translation from map, given key is missing" do
@@ -98,6 +99,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
   test "option: fallback locale" do
     assert Translator.translate(%{"fr" => "bonjour"}, "en") == nil
     assert Translator.translate(%{"fr" => "bonjour"}, "en", fallback_locale: "fr") == "bonjour"
+    assert Translator.translate(%{"fr" => "bonjour"}, :en, fallback_locale: :fr) == "bonjour"
   end
 
   test "option: missing translation handler" do
@@ -178,7 +180,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
       |> Map.put(:comments, [comment])
       |> Map.put(:category, category)
 
-    translated_post = Translator.translate(post, "fr")
+    translated_post = Translator.translate(post, :fr)
 
     assert translated_post.translated_title == "Le titre"
     assert translated_post.translated_body == "Le contenu"
@@ -194,7 +196,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
 
     assert translate.(%{"fr" => "bonjour", "nl" => "hallo"}, locale: "en") == "bonjour"
 
-    assert translate.(%{"fr" => "bonjour", "nl" => "hallo"}, locale: "en", fallback_locale: "nl") ==
+    assert translate.(%{"fr" => "bonjour", "nl" => "hallo"}, locale: "en", fallback_locale: :nl) ==
              "hallo"
 
     assert translate.(%{"fr" => "bonjour", "nl" => "hallo"}, []) == "bonjour"

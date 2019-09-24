@@ -34,7 +34,7 @@ defmodule I18nHelpers.Plugs.PutLocaleFromSubdomainTest do
   end
 
   test "PutLocaleFromSubdomain plug options" do
-    options = PutLocaleFromSubdomain.init(default_locale: "en")
+    options = PutLocaleFromSubdomain.init(default_locale: :en)
 
     conn = conn(:get, "https://example.com/hello")
     conn = PutLocaleFromSubdomain.call(conn, options)
@@ -60,7 +60,7 @@ defmodule I18nHelpers.Plugs.PutLocaleFromSubdomainTest do
       PutLocaleFromSubdomain.call(conn, options)
     end
 
-    options = PutLocaleFromSubdomain.init(allowed_locales: ["en", "fr"], default_locale: "en")
+    options = PutLocaleFromSubdomain.init(allowed_locales: ["en", :fr], default_locale: "en")
 
     conn = conn(:get, "https://example.com/hello")
     conn = PutLocaleFromSubdomain.call(conn, options)
