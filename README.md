@@ -1,12 +1,34 @@
-# I18n Helpers | Translate Your Elixir App
+# I18n Helpers
 
-*I18n Helpers* are a set of tools to help you translate your Elixir application.
+*I18n Helpers* are a set of tools to help you adding multilingual support to
+your Elixir application.
 
-**1. Translate database data**
+**1. Ease the use of translations stored in database**
 
-   * Translate your Ecto Schema structs (including all Schema associations, in one call)
+   * Translate your Ecto Schema structs (including all Schema associations, in one call)<br>
+   ```elixir
+   post =
+     Repo.all(Post)
+     |> Repo.preload(:category)
+     |> Repo.preload(:comments)
+     |> Translator.translate("fr")
+
+   assert post.translated_title == "Le titre"
+   assert post.category.translated_name == "La catégorie"
+   assert List.first(post.comments).translated_text == "Un commentaire"
+   ```
    * Provide a fallback locale
+   ```elixir
+   Translator.translate(post, "nl", fallback_locale: "en")
+   ```
    * Handle missing translations (e.g. get notified)
+   ```elixir
+   Translator.translate(post, "en",
+     handle_missing_translation: fn translations_map, locale ->
+       # add here your error handling stuff,
+       # e.g. notify yourself that a translation is missing
+     end)
+   ```
 
 **2. Fetch the locale from the URL**
 
@@ -362,7 +384,7 @@ Add `i18n_helpers` for Elixir as a dependency in your `mix.exs` file:
 ```elixir
 def deps do
   [
-    {:i18n_helpers, "~> 0.5.2"}
+    {:i18n_helpers, "~> 0.5.3"}
   ]
 end
 ```
