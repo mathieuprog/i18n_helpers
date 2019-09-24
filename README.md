@@ -63,6 +63,8 @@ handling missing translations. See examples below.
 
 ```elixir
 defmodule MyApp.Post do
+  @behaviour I18nHelpers.Ecto.TranslatableSchema
+
   use Ecto.Schema
 
   schema "posts" do

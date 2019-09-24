@@ -30,6 +30,8 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
   end
 
   defmodule Comment do
+    @behaviour I18nHelpers.Ecto.TranslatableSchema
+
     use Ecto.Schema
 
     schema "comments" do

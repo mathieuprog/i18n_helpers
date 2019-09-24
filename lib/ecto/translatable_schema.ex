@@ -52,10 +52,15 @@ defmodule I18nHelpers.Ecto.TranslatableSchema do
   associations list, which is accessible with `get_translatable_assocs\0`.
   """
 
+  @callback get_translatable_fields() :: [atom]
+  @callback get_translatable_assocs() :: [atom]
+
   defmacro __using__(_args) do
     this_module = __MODULE__
 
     quote do
+      @behaviour unquote(this_module)
+
       import unquote(this_module),
         only: [
           translatable_field: 1,
