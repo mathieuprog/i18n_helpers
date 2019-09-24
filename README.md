@@ -141,15 +141,15 @@ alias I18nHelpers.Ecto.Translator
 alias MyApp.{Category, Comment, Post}
 
 comments = [
-  %MyApp.Comment{text: %{"en" => "A comment", "fr" => "Un commentaire"}},
-  %MyApp.Comment{text: %{"en" => "Another comment", "fr" => "Un autre commentaire"}}
+  %Comment{text: %{"en" => "A comment", "fr" => "Un commentaire"}},
+  %Comment{text: %{"en" => "Another comment", "fr" => "Un autre commentaire"}}
 ]
 
 category =
-  %MyApp.Category{name: %{"en" => "The category", "fr" => "La catégorie"}}
+  %Category{name: %{"en" => "The category", "fr" => "La catégorie"}}
 
 post =
-  %MyApp.Post{
+  %Post{
     title: %{"en" => "The title", "fr" => "Le titre"},
     body: %{"en" => "The content", "fr" => "Le contenu"}
   }
@@ -362,7 +362,7 @@ Add `i18n_helpers` for Elixir as a dependency in your `mix.exs` file:
 ```elixir
 def deps do
   [
-    {:i18n_helpers, "~> 0.5.1"}
+    {:i18n_helpers, "~> 0.5.2"}
   ]
 end
 ```

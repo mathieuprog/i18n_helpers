@@ -90,6 +90,7 @@ defmodule I18nHelpers.Ecto.Translator do
   @doc ~S"""
   Returns a closure allowing to memorize the given options for `translate\3`.
   """
+  @doc false
   def set_opts(opts) do
     fn data_structure, overriding_opts ->
       opts = Keyword.merge(opts, overriding_opts)

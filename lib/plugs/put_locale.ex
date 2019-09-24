@@ -1,4 +1,6 @@
 defmodule I18nHelpers.Plugs.PutLocale do
+  @moduledoc false
+
   import Plug.Conn
 
   @spec init(keyword) :: keyword
