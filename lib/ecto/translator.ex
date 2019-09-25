@@ -18,7 +18,7 @@ defmodule I18nHelpers.Ecto.Translator do
 
     4. Repeat step 1. for each associated Ecto struct.
   """
-  @spec translate(list | struct | map, String.t(), keyword) :: list | struct | String.t() | nil
+  @spec translate(list | struct | map, String.t() | atom, keyword) :: list | struct | String.t() | nil
   def translate(data_structure, locale \\ Gettext.get_locale(), opts \\ [])
 
   def translate([], _locale, _opts), do: []
