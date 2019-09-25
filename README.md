@@ -286,6 +286,14 @@ set the [Gettext](https://hexdocs.pm/gettext/Gettext.html) locale.
 You can retrieve the locale from the request path:
 
 ```elixir
+plug I18nHelpers.Plugs.PutLocaleFromPath,
+  allowed_locales: ["en", "fr"],
+  default_locale: "en"
+```
+
+See tests below:
+
+```elixir
 alias I18nHelpers.Plugs.PutLocaleFromPath
 
 options = PutLocaleFromPath.init(allowed_locales: ["fr", "nl"], default_locale: "en")
@@ -303,7 +311,15 @@ assert conn.assigns == %{locale: "en"}
 assert Gettext.get_locale == "en"
 ```
 
-or from the subdomain:
+Or from the subdomain:
+
+```elixir
+plug I18nHelpers.Plugs.PutLocaleFromSubdomain,
+  allowed_locales: ["en", "fr"],
+  default_locale: "en"
+```
+
+Tests:
 
 ```elixir
 alias I18nHelpers.Plugs.PutLocaleFromSubdomain
@@ -323,7 +339,19 @@ assert conn.assigns == %{locale: "en"}
 assert Gettext.get_locale == "en"
 ```
 
-or from the domain:
+Or from the domain:
+
+```elixir
+plug I18nHelpers.Plugs.PutLocaleFromDomain,
+  domains_locales_map: %{
+    "my-awesome-website.example" => "en",
+    "mon-super-site.example" => "fr"
+  },
+  allowed_locales: ["en", "fr"],
+  default_locale: "en"
+```
+
+Tests:
 
 ```elixir
 alias I18nHelpers.Plugs.PutLocaleFromDomain
