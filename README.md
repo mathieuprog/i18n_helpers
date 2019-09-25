@@ -121,6 +121,17 @@ defmodule MyApp.Post do
 end
 ```
 
+You may import `:i18n_helpers`'s formatter configuration by importing
+`i18n_helpers` into your `.formatter.exs` file (this allows for example to keep
+`translatable_field :title` without parentheses when running `mix format`).
+
+```elixir
+[
+  import_deps: [:ecto, :phoenix, :i18n_helpers],
+  #...
+]
+```
+
 The translatable fields in your migration file should also be of `:map` type:
 
 ```elixir
