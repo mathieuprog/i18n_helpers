@@ -3,7 +3,7 @@
 *I18n Helpers* are a set of tools to help you adding multilingual support to
 your Elixir application.
 
-**1. Ease the use of translations stored in database**
+**1. [Ease the use of translations stored in database](#translate-your-ecto-schema)**
 
    * Translate your Ecto Schema structs (including all Schema associations, in one call)<br>
    ```elixir
@@ -30,7 +30,14 @@ your Elixir application.
      end)
    ```
 
-**2. Fetch the locale from the URL**
+**2. [Render multilingual field inputs in your Phoenix Form](#phoenix-form-helpers)**
+
+   * Render multilanguage inputs to work with Ecto Schema structs that need
+   translations
+   * Render multilanguage inputs in one call with custom labels and wrappers to
+   customize design
+
+**3. [Fetch the locale from the URL](#fetch-the-locale-from-the-URL)**
 
    * Assign the locale to the connection and set the Gettext locale
    * Fetch the locale from the request path<br>
@@ -139,7 +146,7 @@ add :title, :map, null: false
 add :body, :map, null: false
 ```
 
-### Translate your schema
+### Translate your Ecto struct
 
 You will typically translate Schema structs after retrieving them from the database:
 
@@ -274,6 +281,47 @@ defmodule MyTranslator do
     raise "missing translation for locale `#{locale}` in #{inspect(translations_map)}"
   end
 end
+```
+
+## Phoenix Form helpers
+
+In order to render a form input that will work on one translation entry of an
+embedded translations map, you must write something similar as the following:
+
+```elixir
+<%= text_input f, :title_en, name: "post[title][en]", value: Map.get(f.data.title, "en", "") %>
+```
+
+The library provide helpers allowing you to add such input in a more concise
+and clean way:
+
+```elixir
+<%= translated_text_input f, :title, :en %>
+```
+
+```elixir
+<%= translated_textarea f, :title, :en %>
+```
+
+You may also render all the inputs (for all languages) for a field in one line:
+
+```elixir
+translated_text_inputs(f, :title, [:en, :fr])
+translated_text_inputs(f, :title, MyApp.Gettext) # will call Gettext.known_locales/1 on given Gettext backend
+```
+
+```elixir
+translated_textareas(f, :title, [:en, :fr])
+```
+
+If you need custom labels and styling, you may pass options allowing you to
+add labels and wrap the generated inputs with custom HTML elements:
+
+```elixir
+translated_text_inputs(f, :title, [:en, :fr],
+    labels: fn locale -> content_tag(:i, locale) end,
+    wrappers: fn _locale -> {:div, class: "translated-input-wrapper"} end
+)
 ```
 
 ## Fetch the locale from the URL
@@ -423,7 +471,7 @@ Add `i18n_helpers` for Elixir as a dependency in your `mix.exs` file:
 ```elixir
 def deps do
   [
-    {:i18n_helpers, "~> 0.5.4"}
+    {:i18n_helpers, "~> 0.6.0"}
   ]
 end
 ```

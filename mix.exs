@@ -1,7 +1,7 @@
 defmodule I18nHelpers.MixProject do
   use Mix.Project
 
-  @version "0.5.4"
+  @version "0.6.0"
 
   def project do
     [
@@ -30,9 +30,10 @@ defmodule I18nHelpers.MixProject do
 
   defp deps do
     [
-      {:plug, "~> 1.8.3 or ~> 1.9", optional: true},
-      {:ecto, "~> 3.2", optional: true},
       {:gettext, "~> 0.17"},
+      {:ecto, "~> 3.2", optional: true},
+      {:phoenix_html, "~> 2.13", optional: true},
+      {:plug, "~> 1.8.3 or ~> 1.9", optional: true},
       {:ex_doc, "~> 0.21", only: :dev},
       {:inch_ex, "~> 2.0", only: :dev},
       {:dialyxir, "~> 0.5", only: :dev}

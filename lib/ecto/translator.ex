@@ -18,7 +18,8 @@ defmodule I18nHelpers.Ecto.Translator do
 
     4. Repeat step 1. for each associated Ecto struct.
   """
-  @spec translate(list | struct | map, String.t() | atom, keyword) :: list | struct | String.t() | nil
+  @spec translate(list | struct | map, String.t() | atom, keyword) ::
+          list | struct | String.t() | nil
   def translate(data_structure, locale \\ Gettext.get_locale(), opts \\ [])
 
   def translate([], _locale, _opts), do: []
@@ -91,9 +92,9 @@ defmodule I18nHelpers.Ecto.Translator do
   defp has_translation?(translations_map, locale),
     do: Map.has_key?(translations_map, locale) && String.trim(locale) != ""
 
-  @_doc ~S"""
-  Returns a closure allowing to memorize the given options for `translate\3`.
-  """
+  # @doc ~S"""
+  # Returns a closure allowing to memorize the given options for `translate\3`.
+  # """
   def set_opts(opts) do
     fn data_structure, overriding_opts ->
       opts = Keyword.merge(opts, overriding_opts)
