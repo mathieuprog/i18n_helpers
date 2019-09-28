@@ -37,7 +37,7 @@ your Elixir application.
    * Render multilanguage inputs in one call with custom labels and wrappers to
    customize design
    
-   ![Multilingual fields](https://afreshcloud.com/images/github/i18n_helpers-multilingual_text_fields.png "Multilingual fields")
+   ![Multilingual fields](https://afreshcloud.com/images/github/i18n_helpers-multilingual_text_fields.png "Multilingual text inputs")
 
 **3. [Fetch the locale from the URL](#fetch-the-locale-from-the-URL)**
 
