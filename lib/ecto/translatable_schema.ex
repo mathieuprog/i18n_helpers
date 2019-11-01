@@ -105,7 +105,11 @@ defmodule I18nHelpers.Ecto.TranslatableSchema do
   """
   defmacro translatable_field(field_name) do
     quote do
-      field(unquote(field_name), :map)
+      fields = Module.get_attribute(__MODULE__, :struct_fields)
+
+      unless List.keyfind(fields, unquote(field_name), 0) do
+        field(unquote(field_name), :map)
+      end
 
       field(String.to_atom("translated_" <> Atom.to_string(unquote(field_name))), :string,
         virtual: true
