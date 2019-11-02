@@ -78,9 +78,10 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
     end
   end
 
-  test "get translation from empty map" do
-    assert Translator.translate(%{}) == nil
-    assert Translator.translate(%{}, "fr") == nil
+  test "get translation from empty map or nil" do
+    assert Translator.translate(%{}) == ""
+    assert Translator.translate(%{}, "fr") == ""
+    assert Translator.translate(nil) == ""
   end
 
   test "get translation from map, given key is present" do
