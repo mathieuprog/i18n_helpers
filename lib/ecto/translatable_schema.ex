@@ -119,6 +119,12 @@ defmodule I18nHelpers.Ecto.TranslatableSchema do
     end
   end
 
+  defmacro translatable_field({_function_name, _metadata, [field_name | _rest] = _arguments}) do
+    quote do
+      translatable_field(unquote(field_name))
+    end
+  end
+
   @doc ~S"""
   Defines a translatable `belongs_to` association.
 
