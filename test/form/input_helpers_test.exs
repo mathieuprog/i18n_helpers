@@ -2,7 +2,7 @@ defmodule I18nHelpers.Form.InputHelpersTest do
   use ExUnit.Case, async: true
 
   alias I18nHelpers.Form.InputHelpers
-  alias I18nHelpers.Ecto.TranslatableSchema
+  alias I18nHelpers.Ecto.TranslatableFields
 
   import Phoenix.HTML
   import Phoenix.HTML.Form
@@ -12,7 +12,7 @@ defmodule I18nHelpers.Form.InputHelpersTest do
 
   defmodule Post do
     use Ecto.Schema
-    use TranslatableSchema
+    use TranslatableFields
 
     schema "posts" do
       translatable_field :title

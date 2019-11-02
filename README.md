@@ -94,7 +94,7 @@ handling missing translations. See examples below.
 
 ```elixir
 defmodule MyApp.Post do
-  @behaviour I18nHelpers.Ecto.TranslatableSchema
+  @behaviour I18nHelpers.Ecto.TranslatableFields
 
   use Ecto.Schema
 
@@ -119,7 +119,7 @@ end
 ```elixir
 defmodule MyApp.Post do
   use Ecto.Schema
-  use I18nHelpers.Ecto.TranslatableSchema
+  use I18nHelpers.Ecto.TranslatableFields
 
   schema "posts" do
     translatable_field :title
@@ -486,7 +486,7 @@ Add `i18n_helpers` for Elixir as a dependency in your `mix.exs` file:
 ```elixir
 def deps do
   [
-    {:i18n_helpers, "~> 0.6.1"}
+    {:i18n_helpers, "~> 0.7.0"}
   ]
 end
 ```

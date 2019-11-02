@@ -1,4 +1,4 @@
-defmodule I18nHelpers.Ecto.TranslatableSchema do
+defmodule I18nHelpers.Ecto.TranslatableFields do
   @moduledoc ~S"""
   Provides macros for defining translatable fields and associations.
 

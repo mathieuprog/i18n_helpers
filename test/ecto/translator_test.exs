@@ -2,13 +2,13 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
   use ExUnit.Case, async: true
 
   alias I18nHelpers.Ecto.Translator
-  alias I18nHelpers.Ecto.TranslatableSchema
+  alias I18nHelpers.Ecto.TranslatableFields
 
   doctest Translator
 
   defmodule Category do
     use Ecto.Schema
-    use TranslatableSchema
+    use TranslatableFields
 
     schema "categories" do
       field(:name, :map)
@@ -20,7 +20,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
 
   defmodule Post do
     use Ecto.Schema
-    use TranslatableSchema
+    use TranslatableFields
 
     schema "posts" do
       translatable_field :title
@@ -31,7 +31,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
   end
 
   defmodule Comment do
-    @behaviour I18nHelpers.Ecto.TranslatableSchema
+    @behaviour I18nHelpers.Ecto.TranslatableFields
 
     use Ecto.Schema
 
@@ -47,7 +47,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
 
   defmodule State do
     use Ecto.Schema
-    use TranslatableSchema
+    use TranslatableFields
 
     schema "states" do
       translatable_field :name
@@ -56,7 +56,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
 
   defmodule Menu do
     use Ecto.Schema
-    use TranslatableSchema
+    use TranslatableFields
 
     schema "menus" do
       translatable_field :label
