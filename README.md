@@ -287,15 +287,28 @@ end
 
 ## Phoenix Form helpers
 
-In order to render a form input that will work on one translation entry of an
-embedded translations map, you must write something similar as the following:
+You may render form inputs for your translation maps using the usual `Phoenix.HTML.Form` view helpers
+as shown below:
 
 ```elixir
 <%= text_input f, :title_en, name: "post[title][en]", value: Map.get(f.data.title, "en", "") %>
 ```
 
-The library provide helpers allowing you to add such input in a more concise
-and clean way:
+However code written in templates should be simple and easier to read. This library provides view
+helpers that allow writing form input fields in a more concise and clean way. Open up the entrypoint
+for defining your web interface, such as `MyAppWeb`, and add the line below into the `view` function's
+`quote` block.
+
+```elixir
+def view do
+  quote do
+    # some code
+    import I18nHelpers.Form.InputHelpers
+  end
+end
+```
+
+Helpers below render a single input:
 
 ```elixir
 <%= translated_text_input f, :title, :en %>
