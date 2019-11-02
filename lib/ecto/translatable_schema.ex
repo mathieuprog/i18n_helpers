@@ -103,7 +103,7 @@ defmodule I18nHelpers.Ecto.TranslatableSchema do
 
   The macro will add the given field name into the translatable fields list.
   """
-  defmacro translatable_field(field_name) do
+  defmacro translatable_field(field_name) when is_atom(field_name) do
     quote do
       fields = Module.get_attribute(__MODULE__, :struct_fields)
 
