@@ -103,7 +103,7 @@ defmodule I18nHelpers.Ecto.TranslatableFields do
 
   The macro will add the given field name into the translatable fields list.
   """
-  defmacro translatable_field(field_name) when is_atom(field_name) do
+  defmacro translatable_field(field_name) do
     quote do
       fields = Module.get_attribute(__MODULE__, :struct_fields)
 
@@ -116,12 +116,6 @@ defmodule I18nHelpers.Ecto.TranslatableFields do
       )
 
       Module.put_attribute(__MODULE__, :translatable_fields, unquote(field_name))
-    end
-  end
-
-  defmacro translatable_field({_function_name, _metadata, [field_name | _rest] = _arguments}) do
-    quote do
-      translatable_field(unquote(field_name))
     end
   end
 
