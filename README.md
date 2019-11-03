@@ -303,7 +303,7 @@ for defining your web interface, such as `MyAppWeb`, and add the line below into
 def view do
   quote do
     # some code
-    import I18nHelpers.Form.InputHelpers
+    import I18nHelpers.HTML.InputHelpers
   end
 end
 ```
@@ -486,7 +486,7 @@ Add `i18n_helpers` for Elixir as a dependency in your `mix.exs` file:
 ```elixir
 def deps do
   [
-    {:i18n_helpers, "~> 0.8.0"}
+    {:i18n_helpers, "~> 0.9.0"}
   ]
 end
 ```

@@ -1,4 +1,4 @@
-defmodule I18nHelpers.Form.InputHelpers do
+defmodule I18nHelpers.HTML.InputHelpers do
   @moduledoc ~S"""
   Provides view helpers to render HTML input fields for text that must be
   provided in multiple languages. The multilingual texts passed to the

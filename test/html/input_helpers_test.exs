@@ -1,7 +1,7 @@
-defmodule I18nHelpers.Form.InputHelpersTest do
+defmodule I18nHelpers.HTML.InputHelpersTest do
   use ExUnit.Case, async: true
 
-  alias I18nHelpers.Form.InputHelpers
+  alias I18nHelpers.HTML.InputHelpers
   alias I18nHelpers.Ecto.TranslatableFields
 
   import Phoenix.HTML
@@ -83,7 +83,7 @@ defmodule I18nHelpers.Form.InputHelpersTest do
           InputHelpers.translated_textareas(
             f,
             :title,
-            I18nHelpers.Form.InputHelpersTest.MyGettext
+            I18nHelpers.HTML.InputHelpersTest.MyGettext
           )
         end)
       )
