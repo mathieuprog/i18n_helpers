@@ -13,10 +13,14 @@ defmodule I18nHelpers.Ecto.TranslatableType do
       translations
       |> Enum.reject(fn {_, v} -> String.trim(v) == "" end)
       |> Map.new()
-      |> (fn map when map == %{} -> nil; map -> map end).()
+      |> (fn
+            map when map == %{} -> nil
+            map -> map
+          end).()
 
     {:ok, translations_without_empty}
   end
+
   def cast(nil), do: {:ok, nil}
   def cast(_), do: :error
 
