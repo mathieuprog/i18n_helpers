@@ -211,4 +211,33 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
                    MyTranslator.translate(%{"fr" => "bonjour"}, "en") == ""
                  end
   end
+
+  test "cast filters out empty translations" do
+    params = %{
+      "title" => %{"en" => "The title", "fr" => ""},
+      "body" => %{"en" => "", "fr" => ""}
+    }
+
+    changeset = Ecto.Changeset.cast(%Post{}, params, [:title, :body])
+
+    assert Map.has_key?(changeset.changes, :title)
+    assert Map.has_key?(changeset.changes.title, "en")
+    refute Map.has_key?(changeset.changes.title, "fr")
+
+    refute Map.has_key?(changeset.changes, :body)
+  end
+
+  test "translate struct with empty translations" do
+    post = %Post{
+      title: %{"fr" => "Le titre"},
+      body: nil
+    }
+
+    assert post.translated_title == nil
+
+    translated_post = Translator.translate(post, "en")
+
+    assert translated_post.translated_title == ""
+    assert translated_post.translated_body == ""
+  end
 end

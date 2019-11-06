@@ -52,6 +52,8 @@ defmodule I18nHelpers.Ecto.TranslatableFields do
   associations list, which is accessible with `get_translatable_assocs\0`.
   """
 
+  alias I18nHelpers.Ecto.TranslatableType
+
   @callback get_translatable_fields() :: [atom]
   @callback get_translatable_assocs() :: [atom]
 
@@ -108,7 +110,7 @@ defmodule I18nHelpers.Ecto.TranslatableFields do
       fields = Module.get_attribute(__MODULE__, :struct_fields)
 
       unless List.keyfind(fields, unquote(field_name), 0) do
-        field(unquote(field_name), :map)
+        field(unquote(field_name), TranslatableType)
       end
 
       field(String.to_atom("translated_" <> Atom.to_string(unquote(field_name))), :string,
