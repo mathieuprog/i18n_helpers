@@ -87,7 +87,7 @@ defmodule I18nHelpers.Ecto.Translator do
 
       true ->
         handle_missing_translation.(translations_map, locale)
-        nil
+        ""
     end
   end
 

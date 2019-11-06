@@ -95,11 +95,11 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
     assert Translator.translate(%{"en" => "hello"}, "nl") == "hello"
 
     Gettext.put_locale("nl")
-    assert Translator.translate(%{"en" => "hello"}) == nil
+    assert Translator.translate(%{"en" => "hello"}) == ""
   end
 
   test "option: fallback locale" do
-    assert Translator.translate(%{"fr" => "bonjour"}, "en") == nil
+    assert Translator.translate(%{"fr" => "bonjour"}, "en") == ""
     assert Translator.translate(%{"fr" => "bonjour"}, "en", fallback_locale: "fr") == "bonjour"
     assert Translator.translate(%{"fr" => "bonjour"}, :en, fallback_locale: :fr) == "bonjour"
   end
@@ -121,7 +121,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
            ]) == [
              "hello",
              "world",
-             nil
+             ""
            ]
 
     assert Translator.translate(
@@ -208,7 +208,7 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
     assert_raise RuntimeError,
                  ~r"missing translation for locale `en` in %{\"fr\" => \"bonjour\"}",
                  fn ->
-                   MyTranslator.translate(%{"fr" => "bonjour"}, "en") == nil
+                   MyTranslator.translate(%{"fr" => "bonjour"}, "en") == ""
                  end
   end
 end
