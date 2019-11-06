@@ -90,6 +90,22 @@ handling missing translations. See examples below.
 
 ### Setup your schema
 
+#### with macro
+
+```elixir
+defmodule MyApp.Post do
+  use Ecto.Schema
+  use I18nHelpers.Ecto.TranslatableFields
+
+  schema "posts" do
+    translatable_field :title
+    translatable_field :body
+    translatable_has_many :comments, MyApp.Comment
+    translatable_belongs_to :category, MyApp.Category
+  end
+end
+```
+
 #### without macro
 
 ```elixir
@@ -111,22 +127,6 @@ defmodule MyApp.Post do
 
   def get_translatable_fields, do: [:title, :body]
   def get_translatable_assocs, do: [:comments, :category]
-end
-```
-
-#### with macro
-
-```elixir
-defmodule MyApp.Post do
-  use Ecto.Schema
-  use I18nHelpers.Ecto.TranslatableFields
-
-  schema "posts" do
-    translatable_field :title
-    translatable_field :body
-    translatable_has_many :comments, MyApp.Comment
-    translatable_belongs_to :category, MyApp.Category
-  end
 end
 ```
 
