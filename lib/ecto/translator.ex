@@ -41,6 +41,16 @@ defmodule I18nHelpers.Ecto.Translator do
 
         %{^field => translations} = entity
 
+        handle_missing_translation = fn translations_map, locale ->
+          Keyword.get(opts, :handle_missing_field_translation, fn _, _, _ -> true end)
+          |> apply([field, translations_map, locale])
+
+          Keyword.get(opts, :handle_missing_translation, fn _, _ -> true end)
+          |> apply([translations_map, locale])
+        end
+
+        opts = Keyword.put(opts, :handle_missing_translation, handle_missing_translation)
+
         struct(updated_entity, [
           {virtual_translated_field, translate(translations, locale, opts)}
         ])
@@ -62,9 +72,9 @@ defmodule I18nHelpers.Ecto.Translator do
     entity
   end
 
-  def translate(nil, _locale, _opts), do: ""
-
-  def translate(map, _locale, _opts) when map == %{}, do: ""
+  def translate(nil, locale, opts) do
+    translate(%{}, locale, opts)
+  end
 
   def translate(%{} = translations_map, locale, opts) do
     locale = to_string(locale)
@@ -89,6 +99,33 @@ defmodule I18nHelpers.Ecto.Translator do
         handle_missing_translation.(translations_map, locale)
         ""
     end
+  end
+
+  @spec translate!(list | struct | map, String.t() | atom, keyword) ::
+          list | struct | String.t()
+  def translate!(data_structure, locale \\ Gettext.get_locale(), opts \\ []) do
+    handle_missing_field_translation = fn field, translations_map, locale ->
+      Keyword.get(opts, :handle_missing_field_translation, fn _, _, _ -> true end)
+      |> apply([field, translations_map, locale])
+
+      raise "translation of field #{inspect(field)} for locale \"#{locale}\" not found in map #{
+              inspect(translations_map)
+            }"
+    end
+
+    handle_missing_translation = fn translations_map, locale ->
+      Keyword.get(opts, :handle_missing_translation, fn _, _ -> true end)
+      |> apply([translations_map, locale])
+
+      raise "translation for locale \"#{locale}\" not found in map #{inspect(translations_map)}"
+    end
+
+    opts =
+      opts
+      |> Keyword.put(:handle_missing_field_translation, handle_missing_field_translation)
+      |> Keyword.put(:handle_missing_translation, handle_missing_translation)
+
+    translate(data_structure, locale, opts)
   end
 
   defp has_translation?(translations_map, locale),
