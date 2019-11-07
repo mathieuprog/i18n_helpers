@@ -31,7 +31,19 @@ defmodule I18nHelpers.Ecto.Translator do
     ]
   end
 
-  def translate(%{__struct__: _struct_name} = entity, locale, opts) do
+  def translate(%{__struct__: _struct_name} = struct, locale, opts) do
+    translate_struct(struct, locale, opts)
+  end
+
+  def translate(%{} = map, locale, opts) do
+    translate_map(map, locale, opts)
+  end
+
+  def translate(nil, locale, opts) do
+    translate_map(%{}, locale, opts)
+  end
+
+  defp translate_struct(%{__struct__: _struct_name} = entity, locale, opts) do
     fields_to_translate = entity.__struct__.get_translatable_fields()
     assocs_to_translate = entity.__struct__.get_translatable_assocs()
 
@@ -72,11 +84,7 @@ defmodule I18nHelpers.Ecto.Translator do
     entity
   end
 
-  def translate(nil, locale, opts) do
-    translate(%{}, locale, opts)
-  end
-
-  def translate(%{} = translations_map, locale, opts) do
+  defp translate_map(%{} = translations_map, locale, opts) do
     locale = to_string(locale)
 
     fallback_locale =
