@@ -81,6 +81,9 @@ Your translatable text field is essentially a map. In your schema, this translat
 
 `field :title, :map`
 
+>  ***Note:** the `:map` type is actually wrapped by a custom Ecto type in order to clean empty translations
+from maps (more information and examples below).
+
 Inserting/updating/deleting translations is not handled by this library, as nothing specific has to
 be done to perform those with `Ecto.Repo` on a `:map` field.
 
@@ -128,6 +131,30 @@ defmodule MyApp.Post do
   def get_translatable_fields, do: [:title, :body]
   def get_translatable_assocs, do: [:comments, :category]
 end
+```
+
+When casting (`Ecto.Changeset.cast/4`) translation maps, missing translations are omitted. For example
+
+```elixir
+%{"en" => "My Favorite Books", "fr" => ""}
+```
+
+becomes
+
+```elixir
+%{"en" => "My Favorite Books"}
+```
+
+If no translations are present in the map, casting converts the value to `nil`:
+
+```elixir
+%{"en" => "", "fr" => ""}
+```
+
+becomes
+
+```elixir
+nil
 ```
 
 You may import `:i18n_helpers`'s formatter configuration by importing
