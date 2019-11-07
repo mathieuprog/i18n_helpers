@@ -247,8 +247,6 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
       body: %{"fr" => "Le contenu"}
     }
 
-    assert post.translated_title == nil
-
     assert_raise RuntimeError,
                  ~r"translation of field :body for locale \"en\" not found in map %{\"fr\" => \"Le contenu\"}",
                  fn ->

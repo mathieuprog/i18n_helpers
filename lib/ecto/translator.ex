@@ -101,6 +101,9 @@ defmodule I18nHelpers.Ecto.Translator do
     end
   end
 
+  @doc ~S"""
+  Same as `translate/3` but raises an error if a translation is missing.
+  """
   @spec translate!(list | struct | map, String.t() | atom, keyword) ::
           list | struct | String.t()
   def translate!(data_structure, locale \\ Gettext.get_locale(), opts \\ []) do

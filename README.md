@@ -176,7 +176,7 @@ Blog.get_post!(post_id) # suppose Blog is the context managing posts, comments, 
 |> Translator.translate("fr")
 ```
 
-Below is an example that shows more clearly the content of the structs and their translations:
+Below is an example that more clearly shows the content of the structs and their translations:
 
 ```elixir
 alias I18nHelpers.Ecto.Translator
@@ -242,6 +242,23 @@ assert title == "The title"
 
 The default fallback locale is the global Gettext default locale.
 
+In case a translation is missing, the translator returns an empty string:
+
+```elixir
+post =
+  %Post{
+    title: %{"en" => "The title"},
+    body: %{"en" => "The content", "fr" => "Le contenu"}
+  }
+
+translated_post = Translator.translate(post, "fr")
+
+assert translated_post.translated_title == ""
+```
+
+If instead you want an error to raise when a translation is missing, you can use the
+bang version of the translate function `translate!/3`.
+
 #### Handling missing translations
 
 You may provide a callback to handle missing translations:
@@ -255,6 +272,25 @@ Translator.translate(%{"fr" => "bonjour"}, "en",
 
     assert translations_map == %{"fr" => "bonjour"}
     assert locale == "en"
+  end
+)
+```
+
+```elixir
+post = %Post{
+    title: %{"en" => "The title"},
+    body: %{"en" => "The content", "fr" => "Le contenu"}
+}
+
+Translator.translate(post, "fr",
+  handle_missing_field_translation: fn field, translations_map, locale ->
+
+    # add here your error handling stuff,
+    # e.g. notify yourself that a translation is missing
+
+    assert field == :title
+    assert translations_map == %{"en" => "The title"}
+    assert locale == "fr"
   end
 )
 ```
