@@ -39,6 +39,17 @@ defmodule I18nHelpers.HTML.InputHelpersTest do
     assert form =~ ~s(<textarea id="title_fr" name="title[fr]"></textarea>)
   end
 
+  test "generate textarea with attribute" do
+    form =
+      safe_to_string(
+        form_for(conn(), "/", fn f ->
+          InputHelpers.translated_textarea(f, :title, :fr, class: "test")
+        end)
+      )
+
+    assert form =~ ~s(<textarea class="test" id="title_fr" name="title[fr]"></textarea>)
+  end
+
   test "generate text input" do
     form =
       safe_to_string(
@@ -50,6 +61,26 @@ defmodule I18nHelpers.HTML.InputHelpersTest do
     assert form =~ ~s(<input id="title_fr" name="title[fr]" type="text" value="">)
 
     refute form =~ ~s(</input>)
+  end
+
+  test "generate element" do
+    form =
+      safe_to_string(
+        form_for(conn(), "/", fn f ->
+          InputHelpers.translated_element(f, :title, :fr)
+        end)
+      )
+
+    assert form =~ ~s(<div id="title_fr"></div>)
+
+    form =
+      safe_to_string(
+        form_for(conn(), "/", fn f ->
+          InputHelpers.translated_element(f, :title, :fr, tag: :span)
+        end)
+      )
+
+    assert form =~ ~s(<span id="title_fr"></span>)
   end
 
   test "generate multiple text inputs" do
@@ -74,6 +105,18 @@ defmodule I18nHelpers.HTML.InputHelpersTest do
 
     assert form =~
              ~s(<label for="title_en">en</label><textarea id="title_en" name="title[en]"></textarea><label for="title_fr">fr</label><textarea id="title_fr" name="title[fr]"></textarea>)
+  end
+
+  test "generate multiple elements" do
+    form =
+      safe_to_string(
+        form_for(conn(), "/", fn f ->
+          InputHelpers.translated_elements(f, :title, [:en, :fr], tag: :span)
+        end)
+      )
+
+    assert form =~
+             ~s(<label for="title_en">en</label><span id="title_en"></span><label for="title_fr">fr</label><span id="title_fr"></span>)
   end
 
   test "generate multiple textareas with Gettext backend" do

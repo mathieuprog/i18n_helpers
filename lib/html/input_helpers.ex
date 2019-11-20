@@ -17,42 +17,54 @@ defmodule I18nHelpers.HTML.InputHelpers do
   alias Phoenix.HTML.Tag
 
   @doc ~S"""
-  Renders a text input HTML element for the given locale.
+  Renders a text input HTML element filled with the translated value for the
+  given locale.
 
   Additional HTML attributes can be provided through opts argument.
   """
   def translated_text_input(form, field, locale, opts \\ []) do
-    opts = Keyword.put_new(opts, :type, "text")
+    opts = Keyword.put_new(opts, :name, translated_input_name(form, field, locale))
 
-    translated_input(form, field, :text, locale, opts)
+    translated_field(form, field, {:input, [type: "text"]}, locale, opts)
   end
 
   @doc ~S"""
-  Renders a textarea HTML element for the given locale.
+  Renders a textarea input HTML element filled with the translated value for the
+  given locale.
 
   Additional HTML attributes can be provided through opts argument.
   """
   def translated_textarea(form, field, locale, opts \\ []) do
-    translated_input(form, field, :textarea, locale, opts)
+    opts = Keyword.put_new(opts, :name, translated_input_name(form, field, locale))
+
+    translated_field(form, field, {:textarea, []}, locale, opts)
   end
 
-  defp translated_input(form, field, input_type, locale, opts) do
+  @doc ~S"""
+  Renders a custom input HTML element filled with the translated value for the
+  given locale. The default element is `div` and may be changed through the `tag`
+  option.
+
+  Additional HTML attributes can be provided through opts argument.
+  """
+  def translated_element(form, field, locale, opts \\ []) do
+    {tag, opts} = Keyword.pop(opts, :tag, :div)
+
+    translated_field(form, field, {tag, []}, locale, opts)
+  end
+
+  defp translated_field(form, field, {tag, attrs}, locale, opts) do
     locale = to_string(locale)
 
     translations = Form.input_value(form, field) || %{}
     translation = Map.get(translations, locale, "")
 
-    input_tag(
-      input_type,
-      translation,
-      Keyword.merge(
-        [
-          name: translated_input_name(form, field, locale),
-          id: translated_input_id(form, field, locale)
-        ],
-        opts
-      )
-    )
+    attrs =
+      [id: translated_input_id(form, field, locale)]
+      |> Keyword.merge(attrs)
+      |> Keyword.merge(opts)
+
+    tag(tag, translation, attrs)
   end
 
   @doc ~S"""
@@ -83,9 +95,7 @@ defmodule I18nHelpers.HTML.InputHelpers do
   end
 
   def translated_text_inputs(form, field, locales, opts) do
-    opts = Keyword.put_new(opts, :type, "text")
-
-    translated_inputs(form, field, :text, locales, opts)
+    translated_fields(&translated_text_input/4, form, field, locales, opts)
   end
 
   @doc ~S"""
@@ -100,10 +110,26 @@ defmodule I18nHelpers.HTML.InputHelpers do
   end
 
   def translated_textareas(form, field, locales, opts) do
-    translated_inputs(form, field, :textarea, locales, opts)
+    translated_fields(&translated_textarea/4, form, field, locales, opts)
   end
 
-  defp translated_inputs(form, field, input_type, locales, opts) do
+  @doc ~S"""
+  Renders multiple custom HTML elements for the given locales (one for each locale).
+  The default element is `div` and may be changed through the `tag` option.
+
+  For options, see `translated_text_inputs/4`
+  """
+  def translated_elements(form, field, locales_or_gettext_backend, opts \\ [])
+
+  def translated_elements(form, field, gettext_backend, opts) when is_atom(gettext_backend) do
+    translated_elements(form, field, Gettext.known_locales(gettext_backend), opts)
+  end
+
+  def translated_elements(form, field, locales, opts) do
+    translated_fields(&translated_element/4, form, field, locales, opts)
+  end
+
+  defp translated_fields(fun, form, field, locales, opts) do
     {get_label_data, opts} = Keyword.pop(opts, :labels, fn locale -> locale end)
     {get_wrapper_data, opts} = Keyword.pop(opts, :wrappers, fn _locale -> nil end)
 
@@ -113,7 +139,7 @@ defmodule I18nHelpers.HTML.InputHelpers do
       wrap(get_wrapper_data.(locale), fn ->
         [
           render_label(form, translated_label_for(field, locale), get_label_data.(locale)),
-          translated_input(form, field, input_type, locale, opts)
+          fun.(form, field, locale, opts)
         ]
       end)
     end)
@@ -128,16 +154,16 @@ defmodule I18nHelpers.HTML.InputHelpers do
   end
 
   defp render_label(form, field, {{:safe, _} = label, opts}),
-    do: safe_render_label(form, field, label, opts)
+       do: safe_render_label(form, field, label, opts)
 
   defp render_label(form, field, {:safe, _} = label),
-    do: safe_render_label(form, field, label, [])
+       do: safe_render_label(form, field, label, [])
 
   defp render_label(form, field, {label, opts}),
-    do: safe_render_label(form, field, label, opts)
+       do: safe_render_label(form, field, label, opts)
 
   defp render_label(form, field, label),
-    do: safe_render_label(form, field, label, [])
+       do: safe_render_label(form, field, label, [])
 
   defp safe_render_label(form, field, label, opts) do
     Form.label form, field, opts do
@@ -145,14 +171,14 @@ defmodule I18nHelpers.HTML.InputHelpers do
     end
   end
 
-  defp input_tag(:text, content, attrs) do
+  defp tag(:input = tag, content, attrs) do
     attrs = Keyword.put_new(attrs, :value, content)
 
-    Tag.tag(:input, attrs)
+    Tag.tag(tag, attrs)
   end
 
-  defp input_tag(:textarea, content, attrs) do
-    Tag.content_tag(:textarea, content, attrs)
+  defp tag(tag, content, attrs) do
+    Tag.content_tag(tag, content, attrs)
   end
 
   defp translated_input_id(form, field, locale) do
