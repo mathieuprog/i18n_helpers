@@ -81,7 +81,7 @@ Your translatable text field is essentially a map. In your schema, this translat
 
 `field :title, :map`
 
->  ***Note:** the `:map` type is actually wrapped by a custom Ecto type in order to clean empty translations
+>  **Note:** the `:map` type is actually wrapped by a custom Ecto type in order to clean empty translations
 from maps (more information and examples below).
 
 Inserting/updating/deleting translations is not handled by this library, as nothing specific has to
