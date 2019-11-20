@@ -63,6 +63,19 @@ defmodule I18nHelpers.HTML.InputHelpersTest do
     refute form =~ ~s(</input>)
   end
 
+  test "generate input of type number" do
+    form =
+      safe_to_string(
+        form_for(conn(), "/", fn f ->
+          InputHelpers.translated_text_input(f, :title, :fr, type: "number", class: "test")
+        end)
+      )
+
+    assert form =~ ~s(<input class="test" id="title_fr" name="title[fr]" type="number" value="">)
+
+    refute form =~ ~s(</input>)
+  end
+
   test "generate element" do
     form =
       safe_to_string(
