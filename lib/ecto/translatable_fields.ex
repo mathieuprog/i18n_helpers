@@ -107,7 +107,7 @@ defmodule I18nHelpers.Ecto.TranslatableFields do
   """
   defmacro translatable_field(field_name) do
     quote do
-      fields = Module.get_attribute(__MODULE__, :struct_fields)
+      fields = Module.get_attribute(__MODULE__, :ecto_struct_fields)
 
       unless List.keyfind(fields, unquote(field_name), 0) do
         field(unquote(field_name), TranslatableType)

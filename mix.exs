@@ -31,7 +31,7 @@ defmodule I18nHelpers.MixProject do
   defp deps do
     [
       {:gettext, "~> 0.18"},
-      {:ecto, "~> 3.7", optional: true},
+      {:ecto, "~> 3.8", optional: true},
       {:phoenix_html, "~> 3.1", optional: true},
       {:plug, "~> 1.9 or ~> 1.12", optional: true},
       {:ex_doc, "~> 0.25.5", only: :dev},
