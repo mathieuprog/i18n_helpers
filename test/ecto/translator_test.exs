@@ -11,7 +11,6 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
     use TranslatableFields
 
     schema "categories" do
-      field(:name, :map)
       translatable_field :name
       translatable_belongs_to :parent_category, Category
       translatable_many_to_many :menus, Menu, join_through: "categories_menus"
