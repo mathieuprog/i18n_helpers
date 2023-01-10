@@ -1,8 +1,12 @@
 locals_without_parens = [
   translatable_field: 1,
   translatable_belongs_to: 2,
+  translatable_belongs_to: 3,
   translatable_has_many: 2,
+  translatable_has_many: 3,
   translatable_has_one: 2,
+  translatable_has_one: 3,
+  translatable_many_to_many: 2,
   translatable_many_to_many: 3
 ]
 
