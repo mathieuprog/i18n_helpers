@@ -119,9 +119,7 @@ defmodule I18nHelpers.Ecto.Translator do
       Keyword.get(opts, :handle_missing_field_translation, fn _, _, _ -> true end)
       |> apply([field, translations_map, locale])
 
-      raise "translation of field #{inspect(field)} for locale \"#{locale}\" not found in map #{
-              inspect(translations_map)
-            }"
+      raise "translation of field #{inspect(field)} for locale \"#{locale}\" not found in map #{inspect(translations_map)}"
     end
 
     handle_missing_translation = fn translations_map, locale ->
