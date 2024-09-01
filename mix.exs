@@ -30,14 +30,14 @@ defmodule I18nHelpers.MixProject do
 
   defp deps do
     [
-      {:gettext, "~> 0.18"},
+      {:gettext, "~> 0.26"},
       {:phoenix_html_helpers, "~> 1.0"},
-      {:ecto, "~> 3.7", optional: true},
+      {:ecto, "~> 3.12", optional: true},
       {:phoenix_html, "~> 4.1", optional: true},
-      {:plug, "~> 1.9 or ~> 1.12", optional: true},
-      {:ex_doc, "~> 0.25.5", only: :dev},
+      {:plug, "~> 1.9 or ~> 1.16", optional: true},
+      {:ex_doc, "~> 0.34", only: :dev},
       {:inch_ex, "~> 2.0", only: :dev},
-      {:dialyxir, "~> 1.1", only: :dev}
+      {:dialyxir, "~> 1.4", only: :dev}
     ]
   end
 
