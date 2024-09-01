@@ -1,7 +1,7 @@
 defmodule I18nHelpers.MixProject do
   use Mix.Project
 
-  @version "0.13.0"
+  @version "0.14.0"
 
   def project do
     [

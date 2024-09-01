@@ -549,7 +549,7 @@ Add `i18n_helpers` for Elixir as a dependency in your `mix.exs` file:
 ```elixir
 def deps do
   [
-    {:i18n_helpers, "~> 0.13.0"}
+    {:i18n_helpers, "~> 0.14"}
   ]
 end
 ```
