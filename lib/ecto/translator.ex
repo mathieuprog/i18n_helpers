@@ -18,7 +18,7 @@ defmodule I18nHelpers.Ecto.Translator do
 
     4. Repeat step 1. for each associated Ecto struct.
   """
-  @spec translate(list | struct | map, String.t() | atom, keyword) ::
+  @spec translate(list | struct | map, list | String.t() | atom, keyword) ::
           list | struct | String.t()
   def translate(data_structure, locale \\ Gettext.get_locale(), opts \\ [])
 
@@ -84,6 +84,40 @@ defmodule I18nHelpers.Ecto.Translator do
     entity
   end
 
+  defp translate_map(%{} = translations_map, [] = _allowed_locales, opts) do
+    fallback_locale =
+      Keyword.get(opts, :fallback_locale, Gettext.get_locale())
+      |> to_string()
+
+    handle_missing_translation =
+      Keyword.get(opts, :handle_missing_translation, fn _, _ -> true end)
+
+    cond do
+      has_translation?(translations_map, fallback_locale) ->
+        translations_map[fallback_locale]
+
+      true ->
+        handle_missing_translation.(translations_map, fallback_locale)
+        ""
+    end
+  end
+
+  defp translate_map(%{} = translations_map, [locale | rest] = _allowed_locales, opts) do
+    locale = to_string(locale)
+
+    handle_missing_translation =
+      Keyword.get(opts, :handle_missing_translation, fn _, _ -> true end)
+
+    cond do
+      has_translation?(translations_map, locale) ->
+        translations_map[locale]
+
+      true ->
+        handle_missing_translation.(translations_map, locale)
+        translate_map(translations_map, rest, opts)
+    end
+  end
+
   defp translate_map(%{} = translations_map, locale, opts) do
     locale = to_string(locale)
 
@@ -112,7 +146,7 @@ defmodule I18nHelpers.Ecto.Translator do
   @doc ~S"""
   Same as `translate/3` but raises an error if a translation is missing.
   """
-  @spec translate!(list | struct | map, String.t() | atom, keyword) ::
+  @spec translate!(list | struct | map, list | String.t() | atom, keyword) ::
           list | struct | String.t()
   def translate!(data_structure, locale \\ Gettext.get_locale(), opts \\ []) do
     handle_missing_field_translation = fn field, translations_map, locale ->

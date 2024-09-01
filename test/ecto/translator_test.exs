@@ -90,6 +90,19 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
     assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, :fr) == "bonjour"
   end
 
+  test "get translation from map, list of locales" do
+    assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}) == "hello"
+    assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, ["en", "fr"]) == "hello"
+    assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, ["fr", "en"]) == "bonjour"
+    assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, ["it", "fr"]) == "bonjour"
+    assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, [:fr, :en]) == "bonjour"
+    assert Translator.translate(%{"fr" => "bonjour"}, ["it", "nl"]) == ""
+
+    assert Translator.translate(%{"en" => "hello", "fr" => "bonjour"}, ["it", "nl"],
+             fallback_locale: "fr"
+           ) == "bonjour"
+  end
+
   test "get translation from map, given key is missing" do
     assert Translator.translate(%{"en" => "hello"}, "nl") == "hello"
 
@@ -150,6 +163,20 @@ defmodule I18nHelpers.Ecto.TranslatorTest do
 
     assert translated_post.translated_title == "The title"
     assert translated_post.translated_body == "The content"
+  end
+
+  test "translate struct with locale list" do
+    post = %Post{
+      title: %{"en" => "The title", "fr" => "Le titre", "it" => "Il titolo"},
+      body: %{"en" => "The content", "fr" => "Le contenu"}
+    }
+
+    assert post.translated_title == nil
+
+    translated_post = Translator.translate(post, ["it", "fr"])
+
+    assert translated_post.translated_title == "Il titolo"
+    assert translated_post.translated_body == "Le contenu"
   end
 
   test "translate struct with associations" do
