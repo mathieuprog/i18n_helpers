@@ -5,8 +5,8 @@ defmodule I18nHelpers.HTML.InputHelpersTest do
   alias I18nHelpers.Ecto.TranslatableFields
 
   import Phoenix.HTML
-  import Phoenix.HTML.Form
-  import Phoenix.HTML.Tag
+  import PhoenixHTMLHelpers.Tag
+  import PhoenixHTMLHelpers.Form
 
   doctest InputHelpers
 

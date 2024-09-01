@@ -14,7 +14,6 @@ defmodule I18nHelpers.HTML.InputHelpers do
   """
 
   alias Phoenix.HTML.Form
-  alias Phoenix.HTML.Tag
 
   @doc ~S"""
   Renders a text input HTML element filled with the translated value for the
@@ -148,25 +147,25 @@ defmodule I18nHelpers.HTML.InputHelpers do
   defp wrap(nil, render_content), do: render_content.()
 
   defp wrap({tag, opts}, render_content) do
-    Tag.content_tag tag, opts do
+    PhoenixHTMLHelpers.Tag.content_tag tag, opts do
       render_content.()
     end
   end
 
   defp render_label(form, field, {{:safe, _} = label, opts}),
-       do: safe_render_label(form, field, label, opts)
+    do: safe_render_label(form, field, label, opts)
 
   defp render_label(form, field, {:safe, _} = label),
-       do: safe_render_label(form, field, label, [])
+    do: safe_render_label(form, field, label, [])
 
   defp render_label(form, field, {label, opts}),
-       do: safe_render_label(form, field, label, opts)
+    do: safe_render_label(form, field, label, opts)
 
   defp render_label(form, field, label),
-       do: safe_render_label(form, field, label, [])
+    do: safe_render_label(form, field, label, [])
 
   defp safe_render_label(form, field, label, opts) do
-    Form.label form, field, opts do
+    PhoenixHTMLHelpers.Form.label form, field, opts do
       label
     end
   end
@@ -174,11 +173,11 @@ defmodule I18nHelpers.HTML.InputHelpers do
   defp tag(:input = tag, content, attrs) do
     attrs = Keyword.put_new(attrs, :value, content)
 
-    Tag.tag(tag, attrs)
+    PhoenixHTMLHelpers.Tag.tag(tag, attrs)
   end
 
   defp tag(tag, content, attrs) do
-    Tag.content_tag(tag, content, attrs)
+    PhoenixHTMLHelpers.Tag.content_tag(tag, content, attrs)
   end
 
   defp translated_input_id(form, field, locale) do
