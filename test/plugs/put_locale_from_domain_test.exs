@@ -1,7 +1,7 @@
 defmodule I18nHelpers.Plugs.PutLocaleFromDomainTest do
   use ExUnit.Case, async: true
 
-  use Plug.Test
+  import Plug.Test
 
   alias I18nHelpers.Plugs.PutLocaleFromDomain
 

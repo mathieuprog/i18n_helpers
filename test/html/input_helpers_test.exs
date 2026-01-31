@@ -21,7 +21,7 @@ defmodule I18nHelpers.HTML.InputHelpersTest do
   end
 
   defmodule MyGettext do
-    use Gettext, otp_app: :i18n_helpers
+    use Gettext.Backend, otp_app: :i18n_helpers
   end
 
   defp conn do
